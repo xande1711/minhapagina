@@ -1,17 +1,241 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MINHA PÁGINA TESTE</title>
+    <title>Calculadora de Fórmulas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .input-container {
+            margin-bottom: 20px;
+        }
+        
+        #formula-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+        
+        #formula-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .preview-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 100px;
+            border: 1px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+        
+        #formula-display {
+            font-size: 20px;
+            font-family: 'Cambria Math', serif;
+            color: #333;
+            text-align: center;
+            overflow-x: auto;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .symbol-btn {
+            padding: 10px 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        
+        .symbol-btn:hover {
+            background: #5a67d8;
+        }
+        
+        #clear-btn {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        
+        #clear-btn:hover {
+            background: #c53030;
+        }
+        
+        .info {
+            background: #e6f7ff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #1890ff;
+            margin-top: 20px;
+        }
+        
+        .info h3 {
+            color: #1890ff;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            #formula-input {
+                font-size: 16px;
+            }
+            
+            #formula-display {
+                font-size: 18px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <cente>
-    <h1>OLÁ, BEM VINDO AO SITE TESTE</h1>
-    <p>ESSE É UM PARÁGRAFO</p>
-    </cente>
+    <div class="container">
+        <h1>📝 Visualizador de Fórmulas Matemáticas</h1>
+        
+        <div class="input-container">
+            <input type="text" id="formula-input" placeholder="Digite sua fórmula matemática aqui...">
+        </div>
+        
+        <div class="buttons">
+            <button class="symbol-btn" data-symbol="+">+</button>
+            <button class="symbol-btn" data-symbol="-">-</button>
+            <button class="symbol-btn" data-symbol="×">×</button>
+            <button class="symbol-btn" data-symbol="÷">÷</button>
+            <button class="symbol-btn" data-symbol="(">(</button>
+            <button class="symbol-btn" data-symbol=")">)</button>
+            <button class="symbol-btn" data-symbol="√">√</button>
+            <button class="symbol-btn" data-symbol="²">x²</button>
+            <button class="symbol-btn" data-symbol="π">π</button>
+            <button id="clear-btn">Limpar</button>
+        </div>
+        
+        <div class="preview-container">
+            <div id="formula-display">Sua fórmula aparecerá aqui...</div>
+        </div>
+        
+        <div class="info">
+            <h3>💡 Como usar:</h3>
+            <p>Digite sua fórmula matemática no campo acima ou use os botões para inserir símbolos. A fórmula será exibida em tempo real na área de visualização.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const formulaInput = document.getElementById('formula-input');
+            const formulaDisplay = document.getElementById('formula-display');
+            const clearBtn = document.getElementById('clear-btn');
+            const symbolButtons = document.querySelectorAll('.symbol-btn');
+            
+            // Atualizar a exibição da fórmula em tempo real
+            formulaInput.addEventListener('input', function() {
+                updateFormulaDisplay(this.value);
+            });
+            
+            // Limpar o campo de entrada
+            clearBtn.addEventListener('click', function() {
+                formulaInput.value = '';
+                updateFormulaDisplay('');
+            });
+            
+            // Adicionar símbolos pelos botões
+            symbolButtons.forEach(button => {
+                if (button.id !== 'clear-btn') {
+                    button.addEventListener('click', function() {
+                        const symbol = this.getAttribute('data-symbol');
+                        const cursorPos = formulaInput.selectionStart;
+                        const currentValue = formulaInput.value;
+                        
+                        // Inserir o símbolo na posição do cursor
+                        formulaInput.value = currentValue.substring(0, cursorPos) + 
+                                           symbol + 
+                                           currentValue.substring(cursorPos);
+                        
+                        // Atualizar a posição do cursor
+                        formulaInput.selectionEnd = cursorPos + symbol.length;
+                        
+                        // Focar no input e atualizar a exibição
+                        formulaInput.focus();
+                        updateFormulaDisplay(formulaInput.value);
+                    });
+                }
+            });
+            
+            // Função para formatar e exibir a fórmula
+            function updateFormulaDisplay(formula) {
+                if (formula.trim() === '') {
+                    formulaDisplay.textContent = 'Sua fórmula aparecerá aqui...';
+                    return;
+                }
+                
+                // Adicionar formatação básica para melhor visualização
+                let formattedFormula = formula
+                    .replace(/\*/g, '×')
+                    .replace(/\//g, '÷')
+                    .replace(/\^2/g, '²')
+                    .replace(/sqrt\$/g, '√(')
+                    .replace(/pi/g, 'π');
+                
+                formulaDisplay.textContent = formattedFormula;
+            }
+            
+            // Focar no input quando a página carregar
+            formulaInput.focus();
+        });
+    </script>
 </body>
 </html>
-
-
-
