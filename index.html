@@ -1,241 +1,271 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Fórmulas</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .container {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 600px;
-        }
-        
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 2rem;
-        }
-        
-        .input-container {
-            margin-bottom: 20px;
-        }
-        
-        #formula-input {
-            width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            transition: border-color 0.3s;
-        }
-        
-        #formula-input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .preview-container {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            min-height: 100px;
-            border: 1px solid #e9ecef;
-            margin-bottom: 20px;
-        }
-        
-        #formula-display {
-            font-size: 20px;
-            font-family: 'Cambria Math', serif;
-            color: #333;
-            text-align: center;
-            overflow-x: auto;
-        }
-        
-        .buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-        
-        .symbol-btn {
-            padding: 10px 15px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s;
-        }
-        
-        .symbol-btn:hover {
-            background: #5a67d8;
-        }
-        
-        #clear-btn {
-            background: #e53e3e;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s;
-        }
-        
-        #clear-btn:hover {
-            background: #c53030;
-        }
-        
-        .info {
-            background: #e6f7ff;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #1890ff;
-            margin-top: 20px;
-        }
-        
-        .info h3 {
-            color: #1890ff;
-            margin-bottom: 10px;
-        }
-        
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 1.5rem;
-            }
-            
-            #formula-input {
-                font-size: 16px;
-            }
-            
-            #formula-display {
-                font-size: 18px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>📝 Visualizador de Fórmulas Matemáticas</h1>
-        
-        <div class="input-container">
-            <input type="text" id="formula-input" placeholder="Digite sua fórmula matemática aqui...">
-        </div>
-        
-        <div class="buttons">
-            <button class="symbol-btn" data-symbol="+">+</button>
-            <button class="symbol-btn" data-symbol="-">-</button>
-            <button class="symbol-btn" data-symbol="×">×</button>
-            <button class="symbol-btn" data-symbol="÷">÷</button>
-            <button class="symbol-btn" data-symbol="(">(</button>
-            <button class="symbol-btn" data-symbol=")">)</button>
-            <button class="symbol-btn" data-symbol="√">√</button>
-            <button class="symbol-btn" data-symbol="²">x²</button>
-            <button class="symbol-btn" data-symbol="π">π</button>
-            <button id="clear-btn">Limpar</button>
-        </div>
-        
-        <div class="preview-container">
-            <div id="formula-display">Sua fórmula aparecerá aqui...</div>
-        </div>
-        
-        <div class="info">
-            <h3>💡 Como usar:</h3>
-            <p>Digite sua fórmula matemática no campo acima ou use os botões para inserir símbolos. A fórmula será exibida em tempo real na área de visualização.</p>
-        </div>
-    </div>
+import { useState, useEffect } from "react";
+import { Search, Menu, ChevronRight, Calendar, User, Clock } from "lucide-react";
+import { Button } from "/components/ui/button";
+import { Input } from "/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "/components/ui/card";
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const formulaInput = document.getElementById('formula-input');
-            const formulaDisplay = document.getElementById('formula-display');
-            const clearBtn = document.getElementById('clear-btn');
-            const symbolButtons = document.querySelectorAll('.symbol-btn');
+const NewsBlog = () => {
+  const [typedText, setTypedText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const fullText = "Últimas notícias em tempo real";
+
+  useEffect(() => {
+    if (currentIndex < fullText.length) {
+      const timeout = setTimeout(() => {
+        setTypedText(prev => prev + fullText[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, 100);
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex]);
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="bg-background border-b border-border">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-lg">N</span>
+            </div>
+            <h1 className="text-xl font-bold text-foreground">NewsBlog</h1>
+          </div>
+          
+          <nav className="hidden md:flex space-x-6">
+            <a href="#" className="text-foreground hover:text-primary transition-colors">Home</a>
+            <a href="#" className="text-foreground hover:text-primary transition-colors">Política</a>
+            <a href="#" className="text-foreground hover:text-primary transition-colors">Tecnologia</a>
+            <a href="#" className="text-foreground hover:text-primary transition-colors">Esportes</a>
+            <a href="#" className="text-foreground hover:text-primary transition-colors">Cultura</a>
+          </nav>
+          
+          <div className="flex items-center space-x-4">
+            <div className="relative hidden md:block">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input placeholder="Buscar notícias..." className="pl-10 pr-4" />
+            </div>
+            <Button variant="ghost" size="icon" className="md:hidden">
+              <Menu className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="bg-muted py-12">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              {typedText}
+              <span className="animate-pulse">|</span>
+            </h2>
+            <p className="text-muted-foreground text-lg mb-8">
+              Fique por dentro das principais notícias do Brasil e do mundo
+            </p>
+            <Button className="bg-primary hover:bg-primary/90">
+              Ver Todas as Notícias
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured News */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <h3 className="text-2xl font-bold text-foreground mb-8">Destaque</h3>
+          <div className="grid md:grid-cols-2 gap-8">
+            <Card className="overflow-hidden">
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src="https://placeholder-image-service.onrender.com/image/800x450?prompt=Breaking news headline image with dramatic newspaper layout and urgent red banner&id=9c58b9db-af59-46c2-8a1f-075547a06a5d" 
+                  alt="Breaking news headline with dramatic newspaper layout and urgent red banner" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <CardHeader>
+                <CardTitle className="text-xl">Nova tecnologia revoluciona mercado de energia limpa</CardTitle>
+                <CardDescription className="flex items-center space-x-4 mt-2">
+                  <span className="flex items-center">
+                    <Calendar className="h-4 w-4 mr-1" />
+                    15 Nov 2024
+                  </span>
+                  <span className="flex items-center">
+                    <User className="h-4 w-4 mr-1" />
+                    João Silva
+                  </span>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-foreground">
+                  Pesquisadores anunciam avanço significativo em energia sustentável que pode mudar 
+                  completamente o panorama energético mundial nos próximos anos.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline">Ler Mais</Button>
+              </CardFooter>
+            </Card>
+
+            <Card className="overflow-hidden">
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src="https://placeholder-image-service.onrender.com/image/800x450?prompt=Sports championship celebration with athletes holding trophy and confetti&id=9c58b9db-af59-46c2-8a1f-075547a06a5d" 
+                  alt="Sports championship celebration with athletes holding trophy and confetti" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <CardHeader>
+                <CardTitle className="text-xl">Seleção brasileira conquista título mundial histórico</CardTitle>
+                <CardDescription className="flex items-center space-x-4 mt-2">
+                  <span className="flex items-center">
+                    <Calendar className="h-4 w-4 mr-1" />
+                    14 Nov 2024
+                  </span>
+                  <span className="flex items-center">
+                    <User className="h-4 w-4 mr-1" />
+                    Maria Santos
+                  </span>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-foreground">
+                  Em uma vitória emocionante, a seleção brasileira conquista o campeonato mundial 
+                  após décadas de espera, marcando um momento histórico para o esporte nacional.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline">Ler Mais</Button>
+              </CardFooter>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Recent Articles */}
+      <section className="py-12 bg-muted">
+        <div className="container mx-auto px-4">
+          <h3 className="text-2xl font-bold text-foreground mb-8">Artigos Recentes</h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Article 1 */}
+            <Card className="overflow-hidden">
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src="https://placeholder-image-service.onrender.com/image/400x300?prompt=Technology conference with speakers and audience in modern auditorium&id=9c58b9db-af59-46c2-8a1f-075547a06a5d" 
+                  alt="Technology conference with speakers and audience in modern auditorium" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <CardHeader className="p-4">
+                <CardTitle className="text-lg">Evento de tecnologia reúne especialistas em São Paulo</CardTitle>
+                <CardDescription className="flex items-center space-x-2 mt-2">
+                  <Clock className="h-3 w-3" />
+                  <span>3 horas atrás</span>
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            {/* Article 2 */}
+            <Card className="overflow-hidden">
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src="https://placeholder-image-service.onrender.com/image/400x300?prompt=Cultural festival with colorful traditional costumes and dancers&id=9c58b9db-af59-46c2-8a1f-075547a06a5d" 
+                  alt="Cultural festival with colorful traditional costumes and dancers" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <CardHeader className="p-4">
+                <CardTitle className="text-lg">Festival cultural atrai milhares no centro do Rio</CardTitle>
+                <CardDescription className="flex items-center space-x-2 mt-2">
+                  <Clock className="h-3 w-3" />
+                  <span>5 horas atrás</span>
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            {/* Article 3 */}
+            <Card className="overflow-hidden">
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src="https://placeholder-image-service.onrender.com/image/400x300?prompt=Economic chart showing growth trends with upward arrow&id=9c58b9db-af59-46c2-8a1f-075547a06a5d" 
+                  alt="Economic chart showing growth trends with upward arrow" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <CardHeader className="p-4">
+                <CardTitle className="text-lg">Economia brasileira mostra sinais de recuperação</CardTitle>
+                <CardDescription className="flex items-center space-x-2 mt-2">
+                  <Clock className="h-3 w-3" />
+                  <span>8 horas atrás</span>
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-background border-t border-border py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                  <span className="text-primary-foreground font-bold text-lg">N</span>
+                </div>
+                <h4 className="text-xl font-bold text-foreground">NewsBlog</h4>
+              </div>
+              <p className="text-muted-foreground">
+                Sua fonte confiável de notícias e informações atualizadas.
+              </p>
+            </div>
             
-            // Atualizar a exibição da fórmula em tempo real
-            formulaInput.addEventListener('input', function() {
-                updateFormulaDisplay(this.value);
-            });
+            <div>
+              <h5 className="font-semibold text-foreground mb-4">Categorias</h5>
+              <ul className="space-y-2 text-muted-foreground">
+                <li><a href="#" className="hover:text-primary">Política</a></li>
+                <li><a href="#" className="hover:text-primary">Tecnologia</a></li>
+                <li><a href="#" className="hover:text-primary">Esportes</a></li>
+                <li><a href="#" className="hover:text-primary">Cultura</a></li>
+              </ul>
+            </div>
             
-            // Limpar o campo de entrada
-            clearBtn.addEventListener('click', function() {
-                formulaInput.value = '';
-                updateFormulaDisplay('');
-            });
+            <div>
+              <h5 className="font-semibold text-foreground mb-4">Links Úteis</h5>
+              <ul className="space-y-2 text-muted-foreground">
+                <li><a href="#" className="hover:text-primary">Sobre Nós</a></li>
+                <li><a href="#" className="hover:text-primary">Contato</a></li>
+                <li><a href="#" className="hover:text-primary">Política de Privacidade</a></li>
+                <li><a href="#" className="hover:text-primary">Termos de Uso</a></li>
+              </ul>
+            </div>
             
-            // Adicionar símbolos pelos botões
-            symbolButtons.forEach(button => {
-                if (button.id !== 'clear-btn') {
-                    button.addEventListener('click', function() {
-                        const symbol = this.getAttribute('data-symbol');
-                        const cursorPos = formulaInput.selectionStart;
-                        const currentValue = formulaInput.value;
-                        
-                        // Inserir o símbolo na posição do cursor
-                        formulaInput.value = currentValue.substring(0, cursorPos) + 
-                                           symbol + 
-                                           currentValue.substring(cursorPos);
-                        
-                        // Atualizar a posição do cursor
-                        formulaInput.selectionEnd = cursorPos + symbol.length;
-                        
-                        // Focar no input e atualizar a exibição
-                        formulaInput.focus();
-                        updateFormulaDisplay(formulaInput.value);
-                    });
-                }
-            });
-            
-            // Função para formatar e exibir a fórmula
-            function updateFormulaDisplay(formula) {
-                if (formula.trim() === '') {
-                    formulaDisplay.textContent = 'Sua fórmula aparecerá aqui...';
-                    return;
-                }
-                
-                // Adicionar formatação básica para melhor visualização
-                let formattedFormula = formula
-                    .replace(/\*/g, '×')
-                    .replace(/\//g, '÷')
-                    .replace(/\^2/g, '²')
-                    .replace(/sqrt\$/g, '√(')
-                    .replace(/pi/g, 'π');
-                
-                formulaDisplay.textContent = formattedFormula;
-            }
-            
-            // Focar no input quando a página carregar
-            formulaInput.focus();
-        });
-    </script>
-</body>
-</html>
+            <div>
+              <h5 className="font-semibold text-foreground mb-4">Newsletter</h5>
+              <p className="text-muted-foreground mb-4">
+                Inscreva-se para receber as últimas notícias
+              </p>
+              <div className="flex space-x-2">
+                <Input placeholder="Seu email" />
+                <Button>Inscrever</Button>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
+            <p>© 2024 NewsBlog. Todos os direitos reservados.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default NewsBlog;
