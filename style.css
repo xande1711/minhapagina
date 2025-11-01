@@ -1,0 +1,185 @@
+/* style.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Fonte Padrão do Facebook */
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #f0f2f5; /* Cor de fundo padrão da página */
+    color: #1c1e21;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Conteúdo Principal (Centralizado) */
+.main-content {
+    max-width: 980px;
+    margin: 72px auto 100px auto;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Lado Esquerdo (Logo e Texto) */
+.left-side {
+    width: 500px;
+    padding-top: 100px; /* Desce a logo e o texto */
+}
+
+.logo-text {
+    font-size: 58px;
+    color: #1877f2; /* Cor azul do logo do Facebook */
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.tagline {
+    font-size: 28px;
+    font-weight: normal;
+    line-height: 32px;
+    width: 480px;
+}
+
+/* Lado Direito (Caixa de Login) */
+.right-side {
+    width: 396px;
+}
+
+.login-box {
+    background-color: #fff;
+    border-radius: 8px;
+    /* Sombra do card de login */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+    padding: 15px 0 24px;
+    text-align: center;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    width: 90%;
+    padding: 14px 16px;
+    margin-bottom: 15px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    font-size: 17px;
+    outline: none;
+    /* Ajuste fino para a aparência do campo */
+}
+
+.login-box input:focus {
+    border-color: #1877f2;
+}
+
+/* Botão de Login (Azul) */
+.btn-login {
+    background-color: #1877f2;
+    color: #fff;
+    width: 90%;
+    border: none;
+    border-radius: 6px;
+    font-size: 20px;
+    padding: 14px 0;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: background-color 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #166fe5;
+}
+
+/* Link Esqueceu a Senha */
+.forgot-password {
+    color: #1877f2;
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Linha Divisória */
+.divider {
+    width: 90%;
+    height: 1px;
+    background-color: #dadde1;
+    margin: 0 auto 20px auto;
+}
+
+/* Botão Criar Nova Conta (Verde) */
+.btn-new-account {
+    background-color: #42b72a;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 17px;
+    padding: 12px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-new-account:hover {
+    background-color: #36a420;
+}
+
+/* Texto Criar uma Página */
+.create-page {
+    margin-top: 28px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.create-page a {
+    font-weight: bold;
+}
+
+.create-page a:hover {
+    text-decoration: underline;
+}
+
+/* Rodapé (Footer) */
+.footer {
+    background-color: #fff;
+    padding: 20px 0 100px 0; /* Mais padding inferior para simular o layout completo */
+    border-top: 1px solid #dddfe2;
+}
+
+.container-footer {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 15px;
+    font-size: 12px;
+    color: #737373;
+}
+
+.container-footer a {
+    color: #737373;
+    margin-right: 15px;
+    padding: 5px 0;
+    display: inline-block;
+}
+
+.container-footer a:hover {
+    text-decoration: underline;
+}
+
+.languages {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dadde1;
+    margin-bottom: 8px;
+}
+
+.copyright {
+    margin-top: 20px !important;
+}
